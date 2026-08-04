@@ -1,0 +1,46 @@
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { supabase } from '../lib/supabaseClient'
+
+export default function RecipeDetail() {
+  const { id } = useParams()
+  const [recipe, setRecipe] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function load() {
+      const { data } = await supabase.from('recipes').select('*').eq('id', id).single()
+      setRecipe(data)
+      setLoading(false)
+    }
+    load()
+  }, [id])
+
+  if (loading) return <div className="empty-state">Lade…</div>
+  if (!recipe) return <div className="empty-state">Rezept nicht gefunden.</div>
+
+  const ingredients = Array.isArray(recipe.ingredients) ? recipe.ingredients : []
+  const steps = Array.isArray(recipe.steps) ? recipe.steps : []
+
+  return (
+    <div className="detail-wrap">
+      {recipe.image_url && <img className="detail-hero-img" src={recipe.image_url} alt={recipe.title} />}
+      <h1>{recipe.title}</h1>
+      <p className="detail-author">von {recipe.author}{recipe.category ? ` · ${recipe.category}` : ''}</p>
+
+      <div className="detail-section">
+        <h2>Zutaten</h2>
+        <ul>
+          {ingredients.map((ing, i) => <li key={i}>{ing}</li>)}
+        </ul>
+      </div>
+
+      <div className="detail-section">
+        <h2>Zubereitung</h2>
+        <ol>
+          {steps.map((step, i) => <li key={i}>{step}</li>)}
+        </ol>
+      </div>
+    </div>
+  )
+}
