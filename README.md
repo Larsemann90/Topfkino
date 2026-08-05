@@ -56,16 +56,30 @@ Test-Rezept einreichen, unter `/admin` gibst du es frei.
 
 - Jede Einreichung über `/einreichen` landet in der Datenbank mit `status: "pending"`.
 - Nur Rezepte mit `status: "approved"` erscheinen auf der Startseite/Suche.
-- Unter `/admin` siehst du alle offenen Einreichungen und kannst sie mit einem
-  Klick freigeben oder ablehnen (löschen).
+- Unter `/admin` meldest du dich mit deinem Admin-Konto an und siehst dort ein
+  Dashboard mit zwei Reitern: **Ausstehend** (freigeben oder löschen) und
+  **Veröffentlicht** (bearbeiten oder löschen).
 
-**Wichtig zur Sicherheit:** In dieser ersten Version ist `/admin` bewusst
-*nicht* durch einen Login geschützt, wie du es gewünscht hast (erstmal ohne
-Login testen). Das heißt: die URL `/admin` ist für jeden erreichbar, der sie
-kennt bzw. errät. Für den privaten Gebrauch oder einen kleinen, vertrauten
-Nutzerkreis ist das meist unkritisch – sobald mehr Leute mitmachen, sollten
-wir einen echten Login für die Admin-Seite ergänzen (Supabase Auth macht das
-recht einfach nachträglich).
+## Admin-Zugang einrichten
+
+Der Admin-Bereich ist durch einen echten Login geschützt (kein einfaches, im
+Code sichtbares Passwort – das wäre kein wirklicher Schutz).
+
+1. Gehe in deinem Supabase-Projekt zu **Authentication → Users**.
+2. Klick auf **"Add user"** → **"Create new user"**.
+3. Trag eine E-Mail-Adresse und ein Passwort für dich ein. Häkchen bei
+   **"Auto Confirm User"** setzen, damit du direkt anmelden kannst.
+4. Öffne im **SQL Editor** die Datei `supabase/update-admin-auth.sql`, kopiere
+   den Inhalt und führe ihn aus. Das schränkt die Admin-Funktionen (Rezepte
+   freigeben, bearbeiten, löschen) so ein, dass nur eingeloggte Nutzer sie
+   ausführen können.
+   *(Bei einer brandneuen Installation ist das bereits in `schema.sql`
+   enthalten – dann kannst du diesen Schritt überspringen.)*
+5. Unter `/admin` in der App kannst du dich jetzt mit dieser E-Mail und
+   diesem Passwort anmelden.
+
+Du kannst über **Authentication → Users → Add user** bei Bedarf weitere
+Admin-Konten anlegen, falls mehrere Personen freigeben sollen dürfen.
 
 ## Bilder
 
