@@ -218,7 +218,7 @@ button {
 .form-wrap { max-width: 640px; margin: 0 auto; padding: 32px; }
 .form-field { margin-bottom: 18px; display: flex; flex-direction: column; gap: 6px; }
 .form-field label { font-size: 13px; color: var(--text-dim); }
-.form-field input, .form-field textarea {
+.form-field input, .form-field textarea, .form-field select {
   background: var(--bg-elevated);
   border: 1px solid #333;
   color: var(--text);
@@ -227,7 +227,8 @@ button {
   font-size: 14px;
   font-family: inherit;
 }
-.form-field textarea { resize: vertical; min-height: 100px; }
+.form-field textarea { resize: vertical; min-height: 220px; line-height: 1.6; }
+.form-field select { appearance: auto; }
 .ingredient-row { display: flex; gap: 8px; margin-bottom: 8px; }
 .ingredient-row input { flex: 1; }
 .icon-btn {

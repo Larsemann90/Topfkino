@@ -6,6 +6,7 @@ import Search from './pages/Search'
 import Favorites from './pages/Favorites'
 import Submit from './pages/Submit'
 import Admin from './pages/Admin'
+import AdminEditRecipe from './pages/AdminEditRecipe'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/favoriten" element={<Favorites />} />
         <Route path="/einreichen" element={<Submit />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/bearbeiten/:id" element={<AdminEditRecipe />} />
       </Routes>
     </>
   )
