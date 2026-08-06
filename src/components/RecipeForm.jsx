@@ -9,9 +9,19 @@ export default function RecipeForm({ initial, onSave, saving, submitLabel }) {
   const [ingredients, setIngredients] = useState(
     initial?.ingredients?.length ? initial.ingredients : ['']
   )
-  const [stepsText, setStepsText] = useState(
-    initial?.steps?.length ? initial.steps.join('\n') : ''
+  const [steps, setSteps] = useState(
+    initial?.steps?.length ? initial.steps : ['']
   )
+
+  function updateStep(i, value) {
+    setSteps((list) => list.map((item, idx) => (idx === i ? value : item)))
+  }
+  function addStep() {
+    setSteps((list) => [...list, ''])
+  }
+  function removeStep(i) {
+    setSteps((list) => list.filter((_, idx) => idx !== i))
+  }
 
   function updateIngredient(i, value) {
     setIngredients((list) => list.map((item, idx) => (idx === i ? value : item)))
@@ -31,10 +41,7 @@ export default function RecipeForm({ initial, onSave, saving, submitLabel }) {
       category: category || null,
       image_url: imageUrl.trim() || null,
       ingredients: ingredients.map((i) => i.trim()).filter(Boolean),
-      steps: stepsText
-        .split('\n')
-        .map((s) => s.trim())
-        .filter(Boolean),
+      steps: steps.map((s) => s.trim()).filter(Boolean),
     })
   }
 
@@ -83,14 +90,24 @@ export default function RecipeForm({ initial, onSave, saving, submitLabel }) {
       </div>
 
       <div className="form-field">
-        <label>Kochanleitung (jeder Schritt in eine neue Zeile)</label>
-        <textarea
-          required
-          rows={10}
-          placeholder={'z.B.\nOfen auf 180°C vorheizen\nMehl und Zucker vermischen\n…'}
-          value={stepsText}
-          onChange={(e) => setStepsText(e.target.value)}
-        />
+        <label>Kochanleitung</label>
+        {steps.map((step, i) => (
+          <div key={i} style={{ marginBottom: 10 }}>
+            <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 4 }}>Schritt {i + 1}</div>
+            <div className="ingredient-row" style={{ alignItems: 'flex-start' }}>
+              <textarea
+                rows={4}
+                placeholder="Was ist bei diesem Schritt zu tun?"
+                value={step}
+                onChange={(e) => updateStep(i, e.target.value)}
+              />
+              {steps.length > 1 && (
+                <button type="button" className="icon-btn" onClick={() => removeStep(i)}>–</button>
+              )}
+            </div>
+          </div>
+        ))}
+        <button type="button" className="icon-btn" onClick={addStep}>+ Nächster Schritt</button>
       </div>
 
       <button className="btn-primary" type="submit" disabled={saving}>
