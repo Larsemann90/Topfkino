@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import { exportRecipeAsWord, exportRecipeAsPdf } from '../lib/recipeExport'
 
 export default function RecipeDetail() {
   const { id } = useParams()
@@ -26,7 +27,15 @@ export default function RecipeDetail() {
 
   return (
     <div className="detail-wrap">
-      {recipe.image_url && <img className="detail-hero-img" src={recipe.image_url} alt={recipe.title} />}
+      <div className="detail-actions no-print">
+        <button className="icon-btn" onClick={() => window.print()}>🖨️ Drucken</button>
+        <button className="icon-btn" onClick={() => exportRecipeAsWord(recipe)}>⬇️ Als Word</button>
+        <button className="icon-btn" onClick={() => exportRecipeAsPdf(recipe)}>⬇️ Als PDF</button>
+      </div>
+
+      {recipe.image_url && (
+        <img className="detail-hero-img no-print" src={recipe.image_url} alt={recipe.title} />
+      )}
       <h1>{recipe.title}</h1>
       <p className="detail-author">von {recipe.author}{recipe.category ? ` · ${recipe.category}` : ''}</p>
 
