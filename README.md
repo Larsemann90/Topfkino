@@ -95,6 +95,26 @@ Reihenfolge aus `src/lib/categories.js` (dieselbe Liste wie im
 Einreichen-Dropdown) und zeigen nur Kategorien, für die es bereits
 freigegebene Rezepte gibt.
 
+**Falls du `add-view-tracking.sql` schon einmal ausgeführt hattest**, führe
+zusätzlich `supabase/add-total-views.sql` aus (neue Query im SQL Editor) –
+das ergänzt die Gesamt-Aufrufzahl, die für "Beliebteste zuerst" in der Suche
+gebraucht wird.
+
+## Suche, Filter & Zufallsrezept
+
+Unter "Alle Rezepte" (bzw. `/suche`) kannst du nach Kategorie filtern und
+zwischen "Neueste zuerst" und "Beliebteste zuerst" sortieren. Der
+🎲-Button in der Navigation springt zu einem zufälligen freigegebenen Rezept.
+
+## Drucken & Exportieren
+
+Auf jeder Rezept-Detailseite gibt es drei Buttons: **Drucken** (öffnet den
+Browser-Druckdialog mit einer aufgeräumten, reinen Textansicht ohne
+Navigation), **Als Word** und **Als PDF** (laden das Rezept direkt als Datei
+herunter). Dafür wurden die Pakete `docx`, `jspdf` und `file-saver` zu
+`package.json` hinzugefügt – beim nächsten automatischen Build durch GitHub
+Actions werden sie automatisch mitinstalliert, du musst nichts weiter tun.
+
 ## Bilder
 
 Aktuell werden Bilder als URL eingetragen (z.B. Link zu einem hochgeladenen
