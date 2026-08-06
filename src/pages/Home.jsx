@@ -1,20 +1,30 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import { CATEGORIES } from '../lib/categories'
 import CategoryRow from '../components/CategoryRow'
 
 export default function Home() {
-  const [recipes, setRecipes] = useState([])
+  const [recent, setRecent] = useState([])
+  const [top, setTop] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function load() {
-      const { data, error } = await supabase
-        .from('recipes')
-        .select('*')
-        .eq('status', 'approved')
-        .order('created_at', { ascending: false })
-      if (!error) setRecipes(data || [])
+      const [{ data: recentData, error: recentError }, { data: topData, error: topError }] = await Promise.all([
+        supabase
+          .from('recipes')
+          .select('*')
+          .eq('status', 'approved')
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('recipe_popularity')
+          .select('*')
+          .order('views_last_30d', { ascending: false })
+          .limit(10),
+      ])
+      if (!recentError) setRecent(recentData || [])
+      if (!topError) setTop(topData || [])
       setLoading(false)
     }
     load()
@@ -22,7 +32,7 @@ export default function Home() {
 
   if (loading) return <div className="empty-state">Lade Rezepte…</div>
 
-  if (recipes.length === 0) {
+  if (recent.length === 0) {
     return (
       <div className="empty-state">
         <h2>Noch keine Rezepte da</h2>
@@ -31,8 +41,10 @@ export default function Home() {
     )
   }
 
-  const featured = recipes[0]
-  const categories = groupByCategory(recipes)
+  const featured = recent[0]
+  const categories = CATEGORIES
+    .map((cat) => ({ cat, recipes: recent.filter((r) => r.category === cat) }))
+    .filter((group) => group.recipes.length > 0)
 
   return (
     <>
@@ -47,19 +59,12 @@ export default function Home() {
         </div>
       </div>
 
-      {Object.entries(categories).map(([cat, list]) => (
-        <CategoryRow key={cat} title={cat} recipes={list} />
+      <CategoryRow title="Kürzlich hinzugefügt" recipes={recent} />
+      <CategoryRow title="Top 10 (letzter Monat)" recipes={top} />
+
+      {categories.map(({ cat, recipes }) => (
+        <CategoryRow key={cat} title={cat} recipes={recipes} />
       ))}
     </>
   )
-}
-
-function groupByCategory(recipes) {
-  const groups = {}
-  for (const r of recipes) {
-    const cat = r.category || 'Sonstiges'
-    if (!groups[cat]) groups[cat] = []
-    groups[cat].push(r)
-  }
-  return groups
 }

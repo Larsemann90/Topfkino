@@ -16,7 +16,7 @@ export default function Search() {
         .from('recipes')
         .select('*')
         .eq('status', 'approved')
-        .ilike('title', `%${q}%`)
+        .or(`title.ilike.%${q}%,author.ilike.%${q}%`)
       setResults(data || [])
       setLoading(false)
     }
@@ -26,7 +26,7 @@ export default function Search() {
 
   return (
     <div style={{ padding: '32px' }}>
-      <h1 style={{ fontSize: 28 }}>Suchergebnisse für „{q}“</h1>
+      <h1 style={{ fontSize: 28 }}>Suchergebnisse für „{q}“ (Titel & Autor)</h1>
       {loading ? (
         <p>Suche läuft…</p>
       ) : results.length === 0 ? (

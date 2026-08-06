@@ -12,6 +12,8 @@ export default function RecipeDetail() {
       const { data } = await supabase.from('recipes').select('*').eq('id', id).single()
       setRecipe(data)
       setLoading(false)
+      // Aufruf zählen (für den Top-10-Bereich), Fehler hier sind unkritisch
+      supabase.from('recipe_views').insert({ recipe_id: id }).then(() => {})
     }
     load()
   }, [id])
