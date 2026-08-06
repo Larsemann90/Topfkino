@@ -227,7 +227,7 @@ button {
   font-size: 14px;
   font-family: inherit;
 }
-.form-field textarea { resize: vertical; min-height: 220px; line-height: 1.6; }
+.form-field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .form-field select { appearance: auto; }
 .ingredient-row { display: flex; gap: 8px; margin-bottom: 8px; }
 .ingredient-row input { flex: 1; }
