@@ -81,6 +81,20 @@ Code sichtbares Passwort – das wäre kein wirklicher Schutz).
 Du kannst über **Authentication → Users → Add user** bei Bedarf weitere
 Admin-Konten anlegen, falls mehrere Personen freigeben sollen dürfen.
 
+## Aufruf-Zählung & Top 10
+
+Für den "Top 10 (letzter Monat)"-Bereich auf der Startseite wird bei jedem
+Öffnen einer Rezept-Detailseite ein Aufruf gezählt. Damit das funktioniert:
+
+1. Öffne im **SQL Editor** eine **neue Query**, füge den Inhalt von
+   `supabase/add-view-tracking.sql` ein und führe sie aus. Das legt die
+   nötige Tabelle und Auswertung an.
+
+Die Kategorien-Reihen auf der Startseite folgen jetzt außerdem der festen
+Reihenfolge aus `src/lib/categories.js` (dieselbe Liste wie im
+Einreichen-Dropdown) und zeigen nur Kategorien, für die es bereits
+freigegebene Rezepte gibt.
+
 ## Bilder
 
 Aktuell werden Bilder als URL eingetragen (z.B. Link zu einem hochgeladenen
