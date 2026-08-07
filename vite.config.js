@@ -13,8 +13,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'Kochapp',
-        short_name: 'Kochapp',
+        name: 'Topfkino',
+        short_name: 'Topfkino',
         description: 'Deine Rezeptsammlung',
         theme_color: '#141414',
         background_color: '#141414',
