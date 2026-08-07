@@ -41,35 +41,57 @@ button {
   top: 0;
   z-index: 50;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 20px 10px;
+  background: linear-gradient(to bottom, rgba(11,11,13,0.97), rgba(11,11,13,0.85) 80%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.navbar-top {
+  display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 16px 32px;
-  background: linear-gradient(to bottom, rgba(11,11,13,0.95), rgba(11,11,13,0.7) 70%, transparent);
-  backdrop-filter: blur(4px);
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .navbar .logo {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
+  font-size: 26px;
   color: var(--accent);
   letter-spacing: 1px;
+  white-space: nowrap;
 }
 
-.navbar nav {
+.navbar-search { flex: 0 1 220px; }
+
+.navbar-pills {
   display: flex;
-  gap: 18px;
-  flex: 1;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
 }
 
-.navbar nav a {
-  font-size: 14px;
+.navbar-pills::-webkit-scrollbar { display: none; }
+
+.pill {
+  flex: 0 0 auto;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--text-dim);
-  transition: color 0.15s;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 7px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
 }
 
-.navbar nav a.active,
-.navbar nav a:hover {
-  color: var(--text);
+.pill.active,
+.pill:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.14);
 }
 
 .search-input {
@@ -79,7 +101,7 @@ button {
   padding: 8px 14px;
   border-radius: var(--radius);
   font-size: 14px;
-  width: 220px;
+  width: 100%;
 }
 
 .search-input:focus {
@@ -109,7 +131,7 @@ button {
   padding: 0 32px 40px;
   background-size: cover;
   background-position: center;
-  margin-top: -76px;
+  margin-top: -118px;
 }
 
 .hero::after {
@@ -211,7 +233,17 @@ button {
   background: #222;
 }
 .detail-wrap h1 { font-size: 44px; margin: 20px 0 4px; }
-.detail-author { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; }
+.detail-author-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+.detail-author { color: var(--text-dim); font-size: 14px; margin: 0; }
+.fav-toggle-inline {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+.fav-toggle-inline:hover { background: rgba(255,255,255,0.14); }
 .detail-section h2 { font-size: 20px; border-bottom: 1px solid #262626; padding-bottom: 8px; margin-top: 32px; }
 .detail-section ul, .detail-section ol { padding-left: 20px; line-height: 1.8; }
 
@@ -266,8 +298,13 @@ button {
 .empty-state { padding: 60px 32px; text-align: center; color: var(--text-dim); }
 
 @media (max-width: 640px) {
-  .hero-title { font-size: 36px; }
-  .navbar { padding: 12px 16px; gap: 12px; }
-  .search-input { width: 120px; }
+  .hero-title { font-size: 32px; }
+  .hero { min-height: 260px; padding: 0 16px 28px; margin-top: -100px; }
+  .navbar { padding: 10px 14px 8px; }
+  .category-row h2 { padding: 0 16px; font-size: 18px; }
+  .category-track { padding: 4px 16px 16px; }
+  .recipe-card { width: 148px; }
+  .recipe-card img { height: 96px; }
   .detail-wrap, .form-wrap { padding: 20px; }
+  .detail-wrap h1 { font-size: 32px; }
 }
