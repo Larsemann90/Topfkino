@@ -21,24 +21,26 @@ export default function Navbar() {
 
   return (
     <header className="navbar">
-      <Link to="/" className="logo">KOCHAPP</Link>
-      <nav>
-        <NavLink to="/" end>Start</NavLink>
-        <NavLink to="/suche">Alle Rezepte</NavLink>
-        <NavLink to="/favoriten">Favoriten</NavLink>
-        <NavLink to="/einreichen">Rezept einreichen</NavLink>
-        <NavLink to="/admin">Admin</NavLink>
+      <div className="navbar-top">
+        <Link to="/" className="logo">TOPFKINO</Link>
+        <form onSubmit={handleSearch} className="navbar-search">
+          <input
+            className="search-input"
+            type="search"
+            placeholder="Suchen…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </form>
+      </div>
+      <nav className="navbar-pills">
+        <NavLink to="/" end className="pill">Start</NavLink>
+        <NavLink to="/suche" className="pill">Alle Rezepte</NavLink>
+        <NavLink to="/favoriten" className="pill">Favoriten</NavLink>
+        <NavLink to="/einreichen" className="pill">Einreichen</NavLink>
+        <button type="button" className="pill" onClick={handleRandom}>Überrasch mich</button>
+        <NavLink to="/admin" className="pill">Admin</NavLink>
       </nav>
-      <button type="button" className="icon-btn" onClick={handleRandom}>🎲 Überrasch mich</button>
-      <form onSubmit={handleSearch}>
-        <input
-          className="search-input"
-          type="search"
-          placeholder="Rezepte suchen…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </form>
     </header>
   )
 }

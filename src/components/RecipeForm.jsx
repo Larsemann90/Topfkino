@@ -6,8 +6,8 @@ export default function RecipeForm({ initial, onSave, saving, submitLabel }) {
   const [author, setAuthor] = useState(initial?.author || '')
   const [category, setCategory] = useState(initial?.category || '')
   const [imageUrl, setImageUrl] = useState(initial?.image_url || '')
-  const [ingredients, setIngredients] = useState(
-    initial?.ingredients?.length ? initial.ingredients : ['']
+  const [ingredientsText, setIngredientsText] = useState(
+    initial?.ingredients?.length ? initial.ingredients.join('\n') : ''
   )
   const [steps, setSteps] = useState(
     initial?.steps?.length ? initial.steps : ['']
@@ -23,16 +23,6 @@ export default function RecipeForm({ initial, onSave, saving, submitLabel }) {
     setSteps((list) => list.filter((_, idx) => idx !== i))
   }
 
-  function updateIngredient(i, value) {
-    setIngredients((list) => list.map((item, idx) => (idx === i ? value : item)))
-  }
-  function addIngredient() {
-    setIngredients((list) => [...list, ''])
-  }
-  function removeIngredient(i) {
-    setIngredients((list) => list.filter((_, idx) => idx !== i))
-  }
-
   function handleSubmit(e) {
     e.preventDefault()
     onSave({
@@ -40,7 +30,7 @@ export default function RecipeForm({ initial, onSave, saving, submitLabel }) {
       author: author.trim(),
       category: category || null,
       image_url: imageUrl.trim() || null,
-      ingredients: ingredients.map((i) => i.trim()).filter(Boolean),
+      ingredients: ingredientsText.split('\n').map((i) => i.trim()).filter(Boolean),
       steps: steps.map((s) => s.trim()).filter(Boolean),
     })
   }
@@ -73,20 +63,14 @@ export default function RecipeForm({ initial, onSave, saving, submitLabel }) {
       </div>
 
       <div className="form-field">
-        <label>Zutaten</label>
-        {ingredients.map((ing, i) => (
-          <div className="ingredient-row" key={i}>
-            <input
-              placeholder="z.B. 200g Mehl"
-              value={ing}
-              onChange={(e) => updateIngredient(i, e.target.value)}
-            />
-            {ingredients.length > 1 && (
-              <button type="button" className="icon-btn" onClick={() => removeIngredient(i)}>–</button>
-            )}
-          </div>
-        ))}
-        <button type="button" className="icon-btn" onClick={addIngredient}>+ Zutat hinzufügen</button>
+        <label>Zutaten (eine pro Zeile, gerne direkt eingefügt/kopiert)</label>
+        <textarea
+          required
+          rows={8}
+          placeholder={'z.B.\n200g Mehl\n2 Eier\n1 Prise Salz'}
+          value={ingredientsText}
+          onChange={(e) => setIngredientsText(e.target.value)}
+        />
       </div>
 
       <div className="form-field">
