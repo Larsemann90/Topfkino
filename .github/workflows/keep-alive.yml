@@ -2,16 +2,21 @@ name: Supabase wach halten
 
 on:
   schedule:
-    - cron: '0 6 * * 1,4' # jeden Montag und Donnerstag, 6:00 UTC
+    - cron: '0 6 * * *' # täglich um 6:00 UTC
   workflow_dispatch: # erlaubt manuelles Starten über den Actions-Tab
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Kleine Datenbank-Abfrage senden
+      - name: Echten Schreibvorgang in der Datenbank auslösen
         run: |
+          NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           curl -s -o /dev/null -w "Status: %{http_code}\n" \
-            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/recipes?select=id&limit=1" \
+            -X PATCH \
+            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/keepalive?id=eq.1" \
             -H "apikey: ${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.VITE_SUPABASE_ANON_KEY }}"
+            -H "Authorization: Bearer ${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "{\"pinged_at\": \"$NOW\"}"
